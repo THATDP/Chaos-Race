@@ -27,6 +27,8 @@ jobs:
         run: npm run test:tracks
       - name: Interface (jsdom)
         run: npm run test:ui
+      - name: Integração do cliente (NetClient + predição)
+        run: npm run test:client
       - name: Integração real com 3 clientes Socket.IO
         run: npm run test:e2e
       - name: Build do frontend

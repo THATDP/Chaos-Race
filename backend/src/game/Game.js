@@ -91,6 +91,7 @@ export class Game {
       st.queue = [];
       st.lastQueuedSeq = 0;
       st.ackSeq = 0;
+      st.holdInput = null;
       this.states.set(pid, st);
     }
     this.order = [...this.states.keys()];
@@ -310,10 +311,16 @@ export class Game {
 
     for (const st of this.states.values()) {
       if (st.eliminated || st.finished) continue;
-      let input = { seq: st.ackSeq, dir: 0, jump: false, hold: false, slide: false };
+      // O cliente envia a direção a 30 Hz, mas a simulação roda a 60 Hz:
+      // mantemos o último estado conhecido entre pacotes (só o pulo é de borda).
+      let input;
       if (!st.disconnected && st.queue.length) {
         input = st.queue.shift();
         st.ackSeq = input.seq;
+        st.holdInput = { dir: input.dir, hold: input.hold, slide: input.slide };
+      } else {
+        const h = st.disconnected ? { dir: 0, hold: false, slide: false } : st.holdInput || { dir: 0, hold: false, slide: false };
+        input = { seq: st.ackSeq, dir: h.dir, jump: false, hold: h.hold, slide: h.slide };
       }
 
       const evs = stepPlayer(st, input, dt, this.runtime, this.time, {

@@ -320,7 +320,8 @@ function startMatch(payload) {
   };
 
   const container = document.getElementById('phaser-container');
-  phaserGame = new Phaser.Game({
+  try {
+    phaserGame = new Phaser.Game({
     type: Phaser.AUTO,
     parent: container,
     width: window.innerWidth,
@@ -339,7 +340,13 @@ function startMatch(payload) {
         session.scene = scene;
       },
     },
-  });
+    });
+  } catch (err) {
+    console.error('[chaos] falha ao iniciar a cena', err);
+    toast('Não foi possível iniciar a corrida neste navegador. Voltando ao lobby.', 'error', 5000);
+    cleanupMatch();
+    goto('lobby');
+  }
 }
 
 function endMatch(results) {
@@ -739,5 +746,14 @@ function boot() {
     if (document.hidden) audio.sfx('ui');
   });
 }
+
+// Rede de segurança: erro inesperado nunca deixa a tela em branco.
+window.addEventListener('error', (e) => {
+  console.error('[chaos] erro em tempo de execução', e.error || e.message);
+  if (e.message && /WebGL|contexto/i.test(e.message)) toast('Seu navegador teve um problema com o gráfico. Recarregue a página.', 'error', 6000);
+});
+window.addEventListener('unhandledrejection', (e) => {
+  console.error('[chaos] promise rejeitada', e.reason);
+});
 
 boot();

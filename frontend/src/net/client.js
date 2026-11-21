@@ -12,7 +12,7 @@ export function resolveServerUrl(profile) {
   const fromQuery = params.get('server');
   if (fromQuery) return fromQuery.replace(/\/$/, '');
   if (profile?.settings?.serverUrl) return profile.settings.serverUrl.replace(/\/$/, '');
-  const env = import.meta.env.VITE_SERVER_URL;
+  const env = import.meta.env?.VITE_SERVER_URL;
   if (env) return String(env).replace(/\/$/, '');
   return defaultServerUrl();
 }

@@ -71,7 +71,9 @@ Comandos úteis:
 | `npm run build` | build de produção em `frontend/dist` |
 | `npm run start` | servidor em modo produção |
 | `npm test` | testes de regras + interface + pistas |
+| `npm run test:client` | cliente real: rede, predição e reconciliação |
 | `npm run test:e2e` | integração real com 3 clientes Socket.IO |
+| `npm run test:all` | tudo (regras + UI + pistas + cliente + e2e) |
 | `npm run test:tracks` | simulador de jogabilidade das pistas |
 
 Variáveis de ambiente: copie `.env.example` para `.env` (backend) e `frontend/.env.example` para `frontend/.env.local` (frontend). Nenhuma credencial é necessária.
@@ -269,6 +271,7 @@ Eventos Socket.IO:
 npm run test:server   # 14 testes de regras do servidor
 npm run test:tracks   # simulador das 5 pistas com a física real
 npm run test:ui       # 30+ verificações de telas/HUD progresso (jsdom)
+npm run test:client   # 13 verificações com o NetClient real
 npm run test:e2e      # 37 verificações com 3 clientes Socket.IO reais
 ```
 
@@ -297,6 +300,10 @@ NO_HAZARDS=1 node tests/track-sim.mjs # sem obstáculos (isola a geometria)
 ### `test:ui` — interface (`tests/ui-entry.js`)
 
 Monta as 7 telas num DOM real (jsdom), dispara os *bindings*, valida HUD, ranking ao vivo, contagem, banner de caos, avatares SVG e o ciclo de progressão (recordes, conquistas, fantasmas).
+
+### `test:client` — cliente real (`tests/client.test.mjs`)
+
+Usa o **mesmo `NetClient`, o mesmo relógio e o mesmo código de física** do jogo contra um servidor de verdade: handshake, criação de sala, entrada por código, `room:state`, `match:start`, contagem, envio de inputs a 30 Hz, comparação entre a predição local e a posição autoritativa (erro máximo ≈ 9 px, o atraso natural do input), reconciliação (erro ≈ 0 depois de reaplicar os inputs pendentes), estabilidade do relógio do servidor, interpolação remota monotônica e continuidade da partida quando um cliente cai.
 
 ### `test:e2e` — multiplayer real (`tests/multiplayer.test.mjs`)
 

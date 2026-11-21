@@ -14,7 +14,9 @@
     "test:server": "npm --prefix backend test",
     "test:ui": "esbuild tests/ui-entry.js --bundle --platform=node --format=esm --alias:@shared=./shared --external:jsdom --outfile=tests/.ui-bundle.mjs --log-level=error && node tests/.ui-bundle.mjs",
     "test:tracks": "node tests/track-sim.mjs",
-    "test:e2e": "node tests/multiplayer.test.mjs"
+    "test:e2e": "node tests/multiplayer.test.mjs",
+    "test:client": "node tests/client.test.mjs",
+    "test:all": "npm test && npm run test:client && npm run test:e2e"
   },
   "type": "module",
   "devDependencies": {
