@@ -166,7 +166,7 @@ Como os modificadores são **funções puras do tempo**, cliente e servidor cheg
 - **8 personagens** desenhados por código (SVG no menu, formas no jogo): Vulcão, Nix, Duque (livres), Mira, Bolt, Yuki, KAOS e Titã (desbloqueáveis).
 - **6 skins**, **6 acessórios** e **6 rastros** — todos estéticos, nenhum dá vantagem.
 - **6 emotes** com balão no jogo.
-- **6 conquistas**, recordes por pista (guardando o **fantasma** da melhor volta) e estatísticas locais (corridas, vitórias, pódios, quedas, eliminações, tempo total).
+- **14 conquistas**, recordes por pista (guardando o **fantasma** da melhor volta) e estatísticas locais (corridas, vitórias, pódios, quedas, eliminações, tempo total).
 - Tudo salvo em `localStorage` (`chaosrace.profile.v1`). Nada é pago e não existe loja.
 
 ---
