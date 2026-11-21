@@ -1,0 +1,32 @@
+name: Manter o servidor acordado
+
+# O plano gratuito do Render suspende a instância depois de ~15 minutos sem
+# tráfego HTTP. Este workflow faz um ping em /health a cada 10 minutos para
+# reduzir (não eliminar) as suspensões. É opcional: se a variável
+# CHAOS_SERVER_URL não estiver configurada, o workflow apenas encerra.
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    name: Ping em /health
+    runs-on: ubuntu-latest
+    steps:
+      - name: Acordar servidor
+        env:
+          SERVER_URL: ${{ vars.CHAOS_SERVER_URL }}
+        run: |
+          if [ -z "$SERVER_URL" ]; then
+            echo "CHAOS_SERVER_URL não configurada — nada a fazer."
+            exit 0
+          fi
+          echo "Ping em $SERVER_URL/health"
+          for tentativa in 1 2 3; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 60 "$SERVER_URL/health" || true)
+            echo "tentativa $tentativa → HTTP $code"
+            if [ "$code" = "200" ]; then exit 0; fi
+            sleep 20
+          done
+          echo "Servidor não respondeu; verifique o painel do Render."

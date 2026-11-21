@@ -1,0 +1,27 @@
+# Blueprint do Render (https://render.com/docs/blueprint-spec)
+# Cria o servidor autoritativo do CHAOS RACE no plano gratuito.
+services:
+  - type: web
+    name: chaos-race-server
+    runtime: node
+    plan: free
+    region: oregon
+    # O código inteiro é enviado, porque backend/ importa ../shared (física compartilhada).
+    buildCommand: cd backend && npm ci --omit=dev
+    startCommand: cd backend && npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.0
+      - key: NODE_ENV
+        value: production
+      # PREENCHA no painel do Render com a origem do seu GitHub Pages,
+      # por exemplo: https://seu-usuario.github.io
+      # Aceita várias origens separadas por vírgula.
+      - key: CORS_ORIGINS
+        sync: false
+      - key: MAX_ROOMS
+        value: 40
+      - key: LOG_LEVEL
+        value: info

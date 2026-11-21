@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  testes:
+    name: Testes e build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Instalar dependências
+        run: |
+          npm ci
+          npm ci --prefix backend
+          npm ci --prefix frontend
+      - name: Regras do servidor
+        run: npm run test:server
+      - name: Simulação de pistas (geometria jogável)
+        run: npm run test:tracks
+      - name: Interface (jsdom)
+        run: npm run test:ui
+      - name: Integração real com 3 clientes Socket.IO
+        run: npm run test:e2e
+      - name: Build do frontend
+        run: npm run build
