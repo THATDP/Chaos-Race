@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#07030f" />
+    <meta
+      name="description"
+      content="Chaos Race — corrida 2D multiplayer onde o caos decide o ritmo. 5 pistas, 6 habilidades, eventos imprevisíveis."
+    />
+    <title>CHAOS RACE — corrida multiplayer de caos</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <div id="app">
+      <div class="bg-fx" aria-hidden="true">
+        <div class="bg-fx__grid"></div>
+        <div class="bg-fx__blob bg-fx__blob--1"></div>
+        <div class="bg-fx__blob bg-fx__blob--2"></div>
+        <div class="bg-fx__blob bg-fx__blob--3"></div>
+        <div class="bg-fx__scan"></div>
+      </div>
+
+      <div id="screens" class="screens"></div>
+
+      <div id="race" class="race hidden" aria-hidden="true">
+        <div id="phaser-container" class="race__canvas"></div>
+        <div id="hud" class="hud"></div>
+        <div id="touch" class="touch hidden"></div>
+      </div>
+
+      <div id="conn" class="conn hidden" role="status">
+        <span class="conn__dot"></span>
+        <span id="conn-text">Conectando…</span>
+      </div>
+
+      <div id="toasts" class="toasts" aria-live="polite"></div>
+      <div id="modal-root" class="modal-root hidden"></div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "name": "chaos-race",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Chaos Race - corrida 2D multiplayer com caos, habilidades e eventos imprevisíveis",
+  "scripts": {
+    "dev": "npm run dev:backend & npm run dev:frontend",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix backend start",
+    "install:all": "npm install --prefix backend && npm install --prefix frontend",
+    "test": "npm run test:server && npm run test:ui && npm run test:tracks",
+    "test:server": "npm --prefix backend test",
+    "test:ui": "esbuild tests/ui-entry.js --bundle --platform=node --format=esm --alias:@shared=./shared --external:jsdom --outfile=tests/.ui-bundle.mjs --log-level=error && node tests/.ui-bundle.mjs",
+    "test:tracks": "node tests/track-sim.mjs",
+    "test:e2e": "node tests/multiplayer.test.mjs",
+    "test:client": "node tests/client.test.mjs",
+    "test:all": "npm test && npm run test:client && npm run test:e2e"
+  },
+  "type": "module",
+  "devDependencies": {
+    "socket.io-client": "^4.8.1",
+    "jsdom": "^25.0.1",
+    "esbuild": "^0.24.2"
+  }
+}
